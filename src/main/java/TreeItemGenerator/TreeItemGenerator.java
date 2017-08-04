@@ -1,35 +1,33 @@
-package XMLParser;
+package TreeItemGenerator;
 
 /**
  * @author Leonhard Gahr
  */
 
 import javafx.scene.control.TreeItem;
-import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
 
-public class Parser {
-    private Element root;
-    private Document jdomDocument;
-    private TreeItem<String> rootNode;
+import java.util.ArrayList;
+import java.util.List;
 
-    public Parser(String XMLFilePath) throws Exception {
-        jdomDocument = new SAXBuilder().build(XMLFilePath);
+public class TreeItemGenerator {
+    private Element root;
+    private TreeItem<String> rootNode;
+    private List<Element> elementList = new ArrayList<Element>();
+
+    public TreeItemGenerator(String XMLFilePath) throws Exception {
+        root = new SAXBuilder().build(XMLFilePath).getRootElement();
+        elementList.add(root);
     }
 
     /**
      * Sets the table items based on the xml-file
      */
     public void setTableItems() {
-        root = jdomDocument.getRootElement();
         rootNode = new TreeItem<String>(root.getName());
 
-        if (!root.getTextTrim().equals("")) {
-            rootNode = new TreeItem<String>(root.getName() + " (\"" + root.getTextTrim() + "\")");
-        } else {
-            rootNode = new TreeItem<String>(root.getName());
-        }
+        rootNode = new TreeItem<String>(root.getName());
 
         get(root, rootNode);
     }
@@ -45,13 +43,12 @@ public class Parser {
 
         // iterate through every child in current node
         for (Element childNode : node.getChildren()) {
+            elementList.add(childNode);
+
             TreeItem<String> item;
-            // handle if the current node has a textvalue
-            if (!childNode.getTextTrim().equals("")) {
-                item = new TreeItem<String>(childNode.getName() + " (\"" + childNode.getTextTrim() + "\")");
-            } else {
-                item = new TreeItem<String>(childNode.getName());
-            }
+
+            item = new TreeItem<String>(childNode.getName());
+
             // recursive step
             get(childNode, item);
 
@@ -64,11 +61,11 @@ public class Parser {
         return root;
     }
 
-    public Document getJdomDocument() {
-        return jdomDocument;
-    }
-
     public TreeItem<String> getRootNode() {
         return rootNode;
+    }
+
+    public List<Element> getElementList() {
+        return elementList;
     }
 }
