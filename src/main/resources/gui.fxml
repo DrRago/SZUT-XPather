@@ -7,10 +7,10 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-
-<VBox xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.Controller">
+<VBox xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.Controller">
    <children>
       <MenuBar id="menuBar">
         <menus>
@@ -32,6 +32,10 @@
             <Button id="executeButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="85.0" text="Ausführen" />
          </children>
       </HBox>
-      <TreeView id="tree" maxHeight="1.7976931348623157E308" prefHeight="351.0" prefWidth="600.0" VBox.vgrow="ALWAYS" />
+      <HBox prefHeight="338.0" prefWidth="600.0">
+         <children>
+            <TreeView id="tree" maxHeight="1.7976931348623157E308" prefHeight="351.0" prefWidth="600.0" />
+            <Pane prefHeight="100.0" prefWidth="483.0" />
+         </children></HBox>
    </children>
 </VBox>
