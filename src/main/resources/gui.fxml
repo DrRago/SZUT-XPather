@@ -7,6 +7,8 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TreeView?>
@@ -17,13 +19,14 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.Controller">
+<VBox xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.Controller">
    <children>
       <MenuBar id="menuBar">
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-              <MenuItem mnemonicParsing="false" text="Open" />
+              <MenuItem mnemonicParsing="false" onAction="#openXML" text="Open" />
+                  <MenuItem mnemonicParsing="false" onAction="#saveXML" text="Save" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
@@ -40,31 +43,44 @@
       </MenuBar>
       <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="26.0" prefWidth="600.0">
          <children>
-            <TextField id="executeXpath" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="539.0" HBox.hgrow="ALWAYS" />
-            <Button id="executeButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="85.0" text="Ausführen" />
+            <TextField id="executeXpath" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#executeXPath" prefHeight="25.0" prefWidth="539.0" HBox.hgrow="ALWAYS" fx:id="xPathExpression" />
+            <Button id="executeButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#executeXPath" prefHeight="25.0" prefWidth="85.0" text="Ausführen" />
          </children>
       </HBox>
       <SplitPane dividerPositions="0.6605351170568562" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="160.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
         <items>
-            <TreeView fx:id="tree" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#clicked" />
+            <TreeView fx:id="tree" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" onKeyReleased="#updateInfo" onMouseClicked="#updateInfo" />
             <GridPane prefHeight="287.0" prefWidth="200.0">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
               </columnConstraints>
               <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="202.0" minHeight="0.0" prefHeight="177.0" vgrow="ALWAYS" />
+                <RowConstraints maxHeight="-Infinity" vgrow="NEVER" />
+                <RowConstraints maxHeight="164.0" minHeight="10.0" prefHeight="135.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label text="Text" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                  <Label fx:id="breadcrump" text="/" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                  <Label text="Text" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
                      <font>
-                        <Font size="96.0" />
+                        <Font size="24.0" />
                      </font>
                   </Label>
-                  <TextArea fx:id="elementText" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="2" />
-                  <Label fx:id="breadcrump" text="/" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                  <TextArea fx:id="elementText" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="4" />
+                  <Label text="Attritubes" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <TableView fx:id="attributeTable" maxHeight="1.7976931348623157E308" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                    <columns>
+                      <TableColumn fx:id="col1" prefWidth="99.0" resizable="false" text="Attribute" />
+                      <TableColumn fx:id="col2" prefWidth="100.0" resizable="false" text="Content" />
+                    </columns>
+                  </TableView>
                </children>
             </GridPane>
         </items>
