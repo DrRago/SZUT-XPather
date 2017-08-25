@@ -19,6 +19,8 @@ public class Run extends Application{
         primaryStage.setTitle("XPather");
 
         primaryStage.setScene(new Scene(root));
+        primaryStage.setMinWidth(600);
+        primaryStage.setMinHeight(500);
         primaryStage.show();
     }
 }

@@ -76,12 +76,17 @@ public class TreeItemGenerator {
 
     public TreeItem<String> executeXPath(String xPath) {
         elementList.clear();
-        TreeItem<String> newRoot = new TreeItem<String>();
+        TreeItem<String> newRoot = new TreeItem<>();
 
         XPathFactory xFactory = XPathFactory.instance();
 
         XPathExpression<Element> expr = xFactory.compile(xPath, Filters.element(), null, root.getNamespace());
         List<Element> results = expr.evaluate(jdomDocument);
+        if (xPath.equals("/")) {
+            setTableItems();
+            newRoot.getChildren().add(rootNode);
+            return newRoot;
+        }
         for (Element resultElement : results) {
             elementList.add(resultElement);
             TreeItem<String> item = new TreeItem<String>(getNamespacePrefix(resultElement) + resultElement.getName());

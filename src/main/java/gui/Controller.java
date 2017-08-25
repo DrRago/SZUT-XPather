@@ -1,18 +1,23 @@
 package gui;
 
 import generator.TreeItemGenerator;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.MapValueFactory;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import org.jaxen.XPathSyntaxException;
+import org.jdom2.Attribute;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Controller {
     @FXML
@@ -28,7 +33,7 @@ public class Controller {
     private TextField xPathExpression;
 
     @FXML
-    private TableView attributeTable;
+    private TableView<Map> attributeTable;
 
     @FXML
     private TableColumn col1;
@@ -38,13 +43,19 @@ public class Controller {
 
     private String currentFile;
 
-
-
     private TreeItemGenerator treeItemGenerator;
 
     @FXML
     void initialize() throws Exception {
         openXML();
+        attributeTable.widthProperty().addListener((observable, oldValue, newValue) -> {
+            col1.setMinWidth((double)newValue / 2 - 1);
+            col1.setPrefWidth((double)newValue / 2 - 1);
+            col2.setMinWidth((double)newValue / 2 - 1);
+            col2.setPrefWidth((double)newValue / 2 - 1);
+
+
+        });
     }
 
     public void executeXPath() {
@@ -74,7 +85,7 @@ public class Controller {
         TreeItem<String> currentItem = (tree.getFocusModel().getFocusedItem());
         Element currentElement = treeItemGenerator.getElementList().get(tree.getRow(currentItem));
 
-        addRow(attributeTable);
+        addRow(currentElement);
 
 
         breadcrump.setText(generateBreadcrump(currentElement));
@@ -82,8 +93,26 @@ public class Controller {
         elementText.setText(currentElement.getText());
     }
 
-    private void addRow(TableView table) {
+    private ObservableList<Map> generateDataInMap(Element element) {
+        ObservableList<Map> allData = FXCollections.observableArrayList();
+        for (Attribute attr : element.getAttributes()) {
+            Map<String, String> dataRow = new HashMap<>();
+            String value1 = attr.getName();
+            String value2 = attr.getValue();
+            dataRow.put("Attribute", value1);
+            dataRow.put("Value", value2);
+            allData.add(dataRow);
+        }
+        return allData;
+    }
+
+    private void addRow(Element element) {
         // TODO: 18/08/2017 Add data to table
+        col1.setCellValueFactory(new MapValueFactory<String>("Attribute"));
+        col2.setCellValueFactory(new MapValueFactory<String>("Value"));
+
+
+        attributeTable.setItems(generateDataInMap(element));
     }
 
     public void openXML() throws Exception {
@@ -130,6 +159,8 @@ public class Controller {
         tree.setRoot(root);
 
         tree.setShowRoot(false);
+
+        xPathExpression.setText("");
     }
 
     public void exitProgramm(){
