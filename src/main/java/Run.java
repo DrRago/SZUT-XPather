@@ -16,7 +16,7 @@ public class Run extends Application{
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("gui.fxml"));
 
         // set stage parameters
-        primaryStage.setTitle("m,");
+        primaryStage.setTitle("XPather");
 
         primaryStage.setScene(new Scene(root));
         primaryStage.show();

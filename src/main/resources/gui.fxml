@@ -19,14 +19,16 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.Controller">
+<VBox xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.Controller">
    <children>
-      <MenuBar id="menuBar">
+      <MenuBar id="menuBar" prefHeight="25.0" prefWidth="519.0">
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
               <MenuItem mnemonicParsing="false" onAction="#openXML" text="Open" />
                   <MenuItem mnemonicParsing="false" onAction="#saveXML" text="Save" />
+                  <MenuItem fx:id="resetMenu" mnemonicParsing="false" onAction="#resetFile" text="Reset" />
+                  <MenuItem fx:id="exitMenu" mnemonicParsing="false" onAction="#exitProgramm" text="Exit" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">

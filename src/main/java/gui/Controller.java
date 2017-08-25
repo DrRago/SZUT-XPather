@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.jaxen.XPathSyntaxException;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 
@@ -12,10 +13,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-/**
- * Created by Leonhard.Gahr on 31/05/2017
- */
 
 public class Controller {
     @FXML
@@ -39,6 +36,9 @@ public class Controller {
     @FXML
     private TableColumn col2;
 
+    private String currentFile;
+
+
 
     private TreeItemGenerator treeItemGenerator;
 
@@ -48,7 +48,13 @@ public class Controller {
     }
 
     public void executeXPath() {
-        tree.setRoot(treeItemGenerator.executeXPath(xPathExpression.getText()));
+        try {
+            tree.setRoot(treeItemGenerator.executeXPath(xPathExpression.getText()));
+        } catch (RuntimeException e) {
+            Alert xpathAlert = new Alert(Alert.AlertType.ERROR, "", ButtonType.CLOSE );
+            xpathAlert.setHeaderText("XPaht is not valid");
+            xpathAlert.showAndWait();
+        }
     }
 
     private String generateBreadcrump(Element element) {
@@ -88,6 +94,7 @@ public class Controller {
         String file;
         try {
             file = fileChooser.showOpenDialog(new Stage()).getAbsolutePath();
+            currentFile = file;
         } catch (NullPointerException e) {
             return;
         }
@@ -109,5 +116,23 @@ public class Controller {
         List<Element> elementList = new ArrayList<Element>();
         elementList.add(treeItemGenerator.getRoot());
         treeItemGenerator.saveXML(elementList);
+    }
+
+    public void resetFile() throws Exception {
+        TreeItem<String> root = new TreeItem<String>();
+
+        treeItemGenerator = new TreeItemGenerator(currentFile);
+
+        treeItemGenerator.setTableItems();
+
+        root.getChildren().add(treeItemGenerator.getRootNode());
+
+        tree.setRoot(root);
+
+        tree.setShowRoot(false);
+    }
+
+    public void exitProgramm(){
+        System.exit(0);
     }
 }
