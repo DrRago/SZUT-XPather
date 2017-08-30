@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
 
 public class Run extends Application{
     public static void main(String args[]) throws Exception {
@@ -13,7 +14,9 @@ public class Run extends Application{
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("gui.fxml"));
+        URL FXMLResource = getClass().getClassLoader().getResource("gui.fxml");
+        assert FXMLResource != null;
+        Parent root = FXMLLoader.load(FXMLResource);
 
         // set stage parameters
         primaryStage.setTitle("XPather");

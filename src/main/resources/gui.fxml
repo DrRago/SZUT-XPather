@@ -27,8 +27,8 @@
             <items>
               <MenuItem mnemonicParsing="false" onAction="#openXML" text="Open" />
                   <MenuItem mnemonicParsing="false" onAction="#saveXML" text="Save" />
-                  <MenuItem fx:id="resetMenu" mnemonicParsing="false" onAction="#resetFile" text="Reset" />
-                  <MenuItem fx:id="exitMenu" mnemonicParsing="false" onAction="#exitProgramm" text="Exit" />
+                  <MenuItem mnemonicParsing="false" onAction="#resetFile" text="Reset" />
+                  <MenuItem mnemonicParsing="false" onAction="#exitProgram" text="Exit" />
             </items>
           </Menu>
             <Menu mnemonicParsing="false" text="View">
@@ -66,7 +66,7 @@
                         <Font size="24.0" />
                      </font>
                   </Label>
-                  <TextArea fx:id="elementText" maxHeight="1.7976931348623157E308" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="4" />
+                  <TextArea fx:id="elementText" editable="false" maxHeight="1.7976931348623157E308" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="4" />
                   <Label text="Attritubes" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                      <font>
                         <Font size="24.0" />
@@ -74,8 +74,8 @@
                   </Label>
                   <TableView fx:id="attributeTable" maxHeight="1.7976931348623157E308" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                     <columns>
-                      <TableColumn fx:id="col1" editable="false" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="-1.0" text="Attribute" />
-                      <TableColumn fx:id="col2" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="-1.0" text="Content" />
+                      <TableColumn fx:id="col1" editable="false" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="-1.0" resizable="false" text="Attribute" />
+                      <TableColumn fx:id="col2" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="-1.0" resizable="false" text="Value" />
                     </columns>
                   </TableView>
                </children>
