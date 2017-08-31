@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="group.xsl"?>
-<ut:group xmlns:ut="http://www.szut.de/SuBITI/" ut:name="368-DQI14" ut:timestamp="2017-03-01T06:34:31">
     <ut:user ut:firstname="Sönke" ut:lastname="Allen" ut:email="soenke30@schule.bremen.de" ut:uid="soenke30">
         <ut:group ut:name="368-DQI14_A"/>
         <ut:group ut:name="368-GKurs-3-dasch_dqi"/>

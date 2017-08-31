@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 import org.jdom2.Attribute;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
+import org.jdom2.input.JDOMParseException;
 
 import java.io.File;
 import java.io.IOException;
@@ -196,6 +197,13 @@ public class Controller {
             try {
                 file = fileChooser.showOpenDialog(new Stage()).getAbsolutePath();
             } catch (NullPointerException e) {
+                // show alert to select a file if no file is currently active
+                if (currentFile == null) {
+                    Alert noFileAlert = new Alert(Alert.AlertType.INFORMATION, "Please select a file. The program will not work without a XML-File", ButtonType.CLOSE);
+                    noFileAlert.setHeaderText("No file selected");
+                    noFileAlert.showAndWait();
+                    openXML();
+                }
                 return;
             }
         } else {
@@ -207,15 +215,24 @@ public class Controller {
         // initialize the treeView
         TreeItem<String> root = new TreeItem<>();
 
-        treeItemGenerator = new TreeItemGenerator(file);
+        try {
+            treeItemGenerator = new TreeItemGenerator(file);
 
-        treeItemGenerator.setTableItems();
+            treeItemGenerator.setTableItems();
 
-        root.getChildren().add(treeItemGenerator.getRootNode());
+            root.getChildren().add(treeItemGenerator.getRootNode());
 
-        tree.setRoot(root);
+            tree.setRoot(root);
 
-        tree.setShowRoot(false);
+            tree.setShowRoot(false);
+        } catch (JDOMParseException e) {
+            Alert exceptionAlert = new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.CLOSE);
+            exceptionAlert.setHeaderText(e.getSystemId());
+            exceptionAlert.showAndWait();
+
+            // open another file on fail
+            openXML();
+        }
     }
 
     /**
