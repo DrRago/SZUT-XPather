@@ -35,7 +35,7 @@
       <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="26.0" prefWidth="600.0">
          <children>
             <TextField id="executeXpath" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#executeXPath" prefHeight="25.0" prefWidth="539.0" HBox.hgrow="ALWAYS" fx:id="xPathExpression" />
-            <Button id="executeButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#executeXPath" prefHeight="25.0" prefWidth="85.0" text="Ausführen" />
+            <Button id="executeButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#executeXPath" prefHeight="25.0" prefWidth="85.0" text="Execute" />
          </children>
       </HBox>
       <SplitPane dividerPositions="0.6605351170568562" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="160.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
@@ -60,7 +60,7 @@
                         <Font size="24.0" />
                      </font>
                   </Label>
-                  <TextArea fx:id="elementText" editable="false" maxHeight="1.7976931348623157E308" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="4" />
+                  <TextArea fx:id="elementText" editable="false" maxHeight="1.7976931348623157E308" prefWidth="200.0" wrapText="true" GridPane.columnSpan="2" GridPane.rowIndex="4" />
                   <Label text="Attritubes" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                      <font>
                         <Font size="24.0" />
