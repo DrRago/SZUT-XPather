@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckMenuItem?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
@@ -31,11 +30,6 @@
                   <MenuItem mnemonicParsing="false" onAction="#exitProgram" text="Exit" />
             </items>
           </Menu>
-            <Menu mnemonicParsing="false" text="View">
-              <items>
-                  <CheckMenuItem mnemonicParsing="false" selected="true" text="Splitview" />
-              </items>
-            </Menu>
         </menus>
       </MenuBar>
       <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="26.0" prefWidth="600.0">
