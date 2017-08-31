@@ -2,6 +2,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -20,6 +21,7 @@ public class Run extends Application{
 
         // set stage parameters
         primaryStage.setTitle("XPather");
+        primaryStage.getIcons().add(new Image("file:xml.png"));
 
         primaryStage.setScene(new Scene(root));
         primaryStage.setMinWidth(600);

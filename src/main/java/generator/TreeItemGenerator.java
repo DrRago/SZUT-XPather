@@ -3,11 +3,13 @@ package generator;
 import javafx.scene.control.TreeItem;
 import org.jdom2.Document;
 import org.jdom2.Element;
+import org.jdom2.JDOMException;
 import org.jdom2.filter.Filters;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.xpath.XPathExpression;
 import org.jdom2.xpath.XPathFactory;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +20,7 @@ public class TreeItemGenerator {
     private Document jdomDocument;
     private Map<TreeItem, Element> elementList = new HashMap<>();
 
-    public TreeItemGenerator(final String XMLFilePath) throws Exception {
+    public TreeItemGenerator(final String XMLFilePath) throws JDOMException, IOException {
         jdomDocument = new SAXBuilder().build(XMLFilePath);
         root = jdomDocument.getRootElement();
     }

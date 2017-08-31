@@ -46,8 +46,13 @@ public class Controller {
 
     private TreeItemGenerator treeItemGenerator;
 
+    /**
+     * Initialize the gui
+     * @throws JDOMException Inherited from openXML
+     * @throws IOException Inherited from openXML
+     */
     @FXML
-    void initialize() throws Exception {
+    void initialize() throws JDOMException, IOException {
         openXML();
 
         // automatically update tableView cell width
@@ -60,32 +65,29 @@ public class Controller {
         });
     }
 
-    public void executeXPath() {
+    /**
+     * Execute a xPath
+     */
+    @FXML
+    private void executeXPath() {
         try {
+            // Pass XPath to treeItemGenerator and add the output to the treeView
             TreeItem<String> newRoot = treeItemGenerator.executeXPath(xPathExpression.getText());
             if (newRoot.getChildren().size() == 0) {
                 newRoot.getChildren().add(new TreeItem<>("Nothing to show here"));
             }
             tree.setRoot(newRoot);
         } catch (RuntimeException e) {
+            // catch a XPath error and display a error message
             Alert xpathAlert = new Alert(Alert.AlertType.ERROR, "", ButtonType.CLOSE);
             xpathAlert.setHeaderText("XPath is not valid");
             xpathAlert.showAndWait();
         }
     }
 
-    private String generateBreadcrump(Element element) {
-        // get the breadcrump string recursively
-
-        String ns = TreeItemGenerator.getNamespace(element);
-
-        if (element.getParentElement() != null) {
-            return generateBreadcrump(element.getParentElement()) + "/" + ns + element.getName();
-        } else {
-            return "/" + ns + element.getName();
-        }
-    }
-
+    /**
+     * Event on selection change in treeView
+     */
     @FXML
     private void updateInfo() {
         // get the selected item as JDOM Element
@@ -96,20 +98,55 @@ public class Controller {
             // update the attribute tableView
             updateAttributes(currentElement);
 
-            // update breadcrump
-            breadcrump.setText(generateBreadcrump(currentElement));
+            // update breadcrumb
+            breadcrump.setText(generateBreadcrumb(currentElement));
 
             // update element content text
             elementText.setText(currentElement.getTextTrim());
         }
     }
+    @FXML
+    private void openXML() throws JDOMException, IOException {
+        openXML(null);
+    }
 
+    @FXML
+    private void resetFile() throws JDOMException, IOException {
+        openXML(currentFile);
+    }
+
+    @FXML
+    public void exitProgram() {
+        System.exit(0);
+    }
+
+    /**
+     * Generate the breadcrumb string recursively
+     *
+     * @param element The element to get the breadcrumb from
+     * @return a XPath string
+     */
+    private String generateBreadcrumb(Element element) {
+        // get the breadcrumb string recursively
+
+        String ns = TreeItemGenerator.getNamespace(element);
+
+        if (element.getParentElement() != null) {
+            return generateBreadcrumb(element.getParentElement()) + "/" + ns + element.getName();
+        } else {
+            return "/" + ns + element.getName();
+        }
+    }
+
+    /**
+     * Generate the Attribute table in a HashMap datastructure
+     * one row is a Map with two strings (Map<String, String>)
+     * The rows are added to a ObservableList which is the datatype for the table items
+     *
+     * @param element The element that we get the data from
+     * @return A list to set as table items
+     */
     private ObservableList<Map<String, String>> generateDataInMap(Element element) {
-        /*
-            Generate the Attribute table in a HashMap datastructure
-            one row is a Map with two strings (Map<String, String>)
-            The rows are added to a ObservableList which is the datatype for the table items
-         */
         ObservableList<Map<String, String>> allData = FXCollections.observableArrayList();
         for (Attribute attr : element.getAttributes()) {
             Map<String, String> dataRow = new HashMap<>();
@@ -125,22 +162,28 @@ public class Controller {
         return allData;
     }
 
+    /**
+     * Update the attribute table
+     *
+     * @param element The element to get the attributes from
+     */
     private void updateAttributes(Element element) {
         // set a factory for the cells
         col1.setCellValueFactory(new MapValueFactory<>("Attribute"));
         col2.setCellValueFactory(new MapValueFactory<>("Value"));
 
-
         // add items to the table
         attributeTable.setItems(generateDataInMap(element));
     }
 
-    @FXML
-    private void openXML() throws Exception {
-        openXML(null);
-    }
-
-    private void openXML(String path) throws Exception {
+    /**
+     * Open a XML file and load it into the gui
+     *
+     * @param path (Optional) the Path of the XML file, if null, a fileOpenDialog will be opened
+     * @throws JDOMException inherited from TreeItemGenerator
+     * @throws IOException inherited from TreeItemGenerator
+     */
+    private void openXML(String path) throws JDOMException, IOException {
         String file;
 
         if (path == null) {
@@ -175,7 +218,12 @@ public class Controller {
         tree.setShowRoot(false);
     }
 
-    public void saveXML() throws IOException, JDOMException {
+    /**
+     * Save the current tree content as XML
+     *
+     * @throws IOException inherited from XMLBuilder
+     */
+    public void saveXML() throws IOException {
         // get all children of root because of the invisible root
         List<TreeItem<String>> elementList = new ArrayList<>();
         elementList.addAll(tree.getRoot().getChildren());
@@ -187,13 +235,5 @@ public class Controller {
         fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
 
         XMLBuilder.saveXML(elementList, fileChooser.showSaveDialog(new Stage()).getAbsolutePath(), treeItemGenerator);
-    }
-
-    public void resetFile() throws Exception {
-        openXML(currentFile);
-    }
-
-    public void exitProgram() {
-        System.exit(0);
     }
 }
