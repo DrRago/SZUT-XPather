@@ -228,6 +228,7 @@ public class Controller {
 
             tree.setShowRoot(false);
         } catch (JDOMParseException e) {
+            // Display an error if the JDOM parse fails
             Alert exceptionAlert = new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.CLOSE);
             exceptionAlert.setHeaderText(e.getSystemId());
             exceptionAlert.showAndWait();
