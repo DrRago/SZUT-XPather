@@ -49,8 +49,9 @@ public class Controller {
 
     /**
      * Initialize the gui
+     *
      * @throws JDOMException Inherited from openXML
-     * @throws IOException Inherited from openXML
+     * @throws IOException   Inherited from openXML
      */
     @FXML
     void initialize() throws JDOMException, IOException {
@@ -106,6 +107,7 @@ public class Controller {
             elementText.setText(currentElement.getTextTrim());
         }
     }
+
     @FXML
     private void openXML() throws JDOMException, IOException {
         openXML(null);
@@ -182,7 +184,7 @@ public class Controller {
      *
      * @param path (Optional) the Path of the XML file, if null, a fileOpenDialog will be opened
      * @throws JDOMException inherited from TreeItemGenerator
-     * @throws IOException inherited from TreeItemGenerator
+     * @throws IOException   inherited from TreeItemGenerator
      */
     private void openXML(String path) throws JDOMException, IOException {
         String file;
@@ -251,6 +253,8 @@ public class Controller {
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML-Files", "*.xml"));
         fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
 
-        XMLBuilder.saveXML(elementList, fileChooser.showSaveDialog(new Stage()).getAbsolutePath(), treeItemGenerator);
+        try {
+            XMLBuilder.saveXML(elementList, fileChooser.showSaveDialog(new Stage()).getAbsolutePath(), treeItemGenerator);
+        } catch (NullPointerException ignored) {}
     }
 }
