@@ -1,6 +1,7 @@
 package gui;
 
 import generator.TreeItemGenerator;
+import generator.XMLBuilder;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -185,7 +186,7 @@ public class Controller {
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML-Files", "*.xml"));
         fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
 
-        treeItemGenerator.saveXML(elementList, fileChooser.showSaveDialog(new Stage()).getAbsolutePath());
+        XMLBuilder.saveXML(elementList, fileChooser.showSaveDialog(new Stage()).getAbsolutePath(), treeItemGenerator);
     }
 
     public void resetFile() throws Exception {

@@ -1,9 +1,5 @@
 package generator;
 
-/**
- * @author Leonhard Gahr
- */
-
 import javafx.scene.control.TreeItem;
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -12,9 +8,6 @@ import org.jdom2.input.SAXBuilder;
 import org.jdom2.xpath.XPathExpression;
 import org.jdom2.xpath.XPathFactory;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -71,8 +64,6 @@ public class TreeItemGenerator {
      * @return The new tree root that contains the results
      */
     public TreeItem<String> executeXPath(final String xPath) {
-        // TODO probably remove this line
-        elementList.clear();
         final TreeItem<String> newRoot = new TreeItem<>();
 
         // catch case if xPath is just / to show the whole document
@@ -90,7 +81,6 @@ public class TreeItemGenerator {
         // iterate the results and add the content to the new root
         results.forEach(resultElement -> {
             final TreeItem<String> item = new TreeItem<>(getNamespace(resultElement) + resultElement.getName());
-            elementList.put(item, resultElement);
             get(resultElement, item);
             newRoot.getChildren().add(item);
         });
@@ -121,102 +111,5 @@ public class TreeItemGenerator {
             ns = element.getNamespace().getPrefix() + ":";
         }
         return ns;
-    }
-
-    /**
-     * get the XML tree as String to store it in a file recursively
-     *
-     * @param element The current element (on method call the init element)
-     * @param level   The level for tabulators for the Einrückung
-     * @return The XML string
-     */
-    // TODO change "Einrückung"
-    private String getXMLString(final Element element, final int level) {
-        final StringBuilder string = new StringBuilder();
-        final StringBuilder tabulators = new StringBuilder();
-
-        for (int i = 0; i < level; i++) {
-            tabulators.append("\t");
-        }
-
-        // open the tag
-        string.append(tabulators)
-                .append("<")
-                .append(getNamespace(element))
-                .append(element.getName())
-                .append(getAttributeStrings(element));
-
-        // check if the tag should be closed immediately
-        if (hasContent(element)) {
-            string.append(">\n");
-
-            // recursive step for all children of the element
-            for (final Element child : element.getChildren()) {
-                string.append(getXMLString(child, level + 1));
-            }
-
-            // close the tag
-            string.append(tabulators)
-                    .append("</")
-                    .append(getNamespace(element))
-                    .append(element.getName())
-                    .append(">\n");
-        } else {
-            // close the tag
-            string.append("/>\n");
-        }
-
-        return string.toString();
-    }
-
-    /**
-     * Check if a Element has any type of content
-     *
-     * @param element The element to be checked
-     * @return True if it has content, False if it hasn't
-     */
-    private boolean hasContent(final Element element) {
-        return element.getContent().size() != 0;
-    }
-
-    /**
-     * Get the attributes of an element as XML string
-     *
-     * @param element The Element to get the attributes from
-     * @return The complete String
-     */
-    private String getAttributeStrings(final Element element) {
-        final StringBuilder attributes = new StringBuilder();
-
-        // Build the string for each attribute
-        element.getAttributes().forEach(
-                attribute -> attributes.append(" ")
-                        .append(getNamespace(element))
-                        .append(attribute.getName())
-                        .append("=\"")
-                        .append(attribute.getValue())
-                        .append("\"")
-        );
-
-        return attributes.toString();
-    }
-
-    /**
-     * Store TreeElements as
-     *
-     * @param elements
-     * @param path
-     * @throws IOException
-     */
-    public void saveXML(final List<TreeItem<String>> elements, final String path) throws IOException {
-        final BufferedWriter bw = new BufferedWriter(new FileWriter(path));
-
-        elements.forEach(e -> {
-            try {
-                bw.write(getXMLString(elementList.get(e), 0) + "\n");
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-        });
     }
 }
