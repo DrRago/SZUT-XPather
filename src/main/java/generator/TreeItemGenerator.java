@@ -69,7 +69,7 @@ public class TreeItemGenerator {
         final TreeItem<String> newRoot = new TreeItem<>();
 
         // catch case if xPath is just / to show the whole document
-        if (xPath.equals("/")) {
+        if (xPath.equals("/") || xPath.equals("")) {
             setTableItems();
             newRoot.getChildren().add(rootNode);
             return newRoot;
